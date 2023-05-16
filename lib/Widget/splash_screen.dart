@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
           padding: const EdgeInsets.all(50),
           child: InkWell(
             onTap: () {
-              Navigator.of(context).pushNamed(LoginScreen.routerName);
+              Navigator.of(context).pushNamed('/login');
             },
             child: Container(
               height: 50,
