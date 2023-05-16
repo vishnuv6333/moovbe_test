@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mooovbe/Router/route_mange.dart';
+import 'package:provider/provider.dart';
 
+import 'Provider/driver_list.dart';
 import 'Widget/splash_screen.dart';
 
 void main() {
@@ -10,17 +12,19 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (context) => DriverProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: SplashScreen(),
+        routes: RouteManage,
       ),
-      home: SplashScreen(),
-      routes: RouteManage,
     );
   }
 }

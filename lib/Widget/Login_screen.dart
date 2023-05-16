@@ -68,71 +68,82 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
-          Form(
-              child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, top: 42),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      alignLabelWithHint: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: HexColor('#2A2A2A1A'),
-                      label: Center(
-                          child: Text(
-                        'Enter User Username',
-                        style: TextStyle(color: HexColor('#707070')),
-                      ))),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {},
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(30),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: HexColor('#2A2A2A1A'),
-                      label: Center(
-                          child: Text(
-                        'Password',
-                        style: TextStyle(color: HexColor('#707070')),
-                      ))),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value!.isEmpty || value.length < 5) {
-                      return 'Password is too short!';
-                    }
-                  },
-                  onSaved: (value) {},
-                ),
-              ),
-            ],
-          ))
+          FormWidget()
         ]),
       ),
     );
+  }
+}
+
+class FormWidget extends StatelessWidget {
+  const FormWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 42),
+          child: TextFormField(
+            decoration: InputDecoration(
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                alignLabelWithHint: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
+                filled: true,
+                fillColor: HexColor('#2A2A2A1A'),
+                label: Center(
+                    child: Text(
+                  'Enter User Username',
+                  style: TextStyle(color: HexColor('#707070')),
+                ))),
+            keyboardType: TextInputType.emailAddress,
+            validator: (value) {
+              if (value!.isEmpty || !value.contains('@')) {
+                return 'Invalid email!';
+              }
+              return null;
+            },
+            onSaved: (value) {},
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(30),
+          child: TextFormField(
+            decoration: InputDecoration(
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
+                filled: true,
+                fillColor: HexColor('#2A2A2A1A'),
+                label: Center(
+                    child: Text(
+                  'Password',
+                  style: TextStyle(color: HexColor('#707070')),
+                ))),
+            obscureText: true,
+            validator: (value) {
+              if (value!.isEmpty || value.length < 5) {
+                return 'Password is too short!';
+              }
+            },
+            onSaved: (value) {},
+          ),
+        ),
+      ],
+    ));
   }
 }

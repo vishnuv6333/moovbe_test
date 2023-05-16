@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Widget/Login_screen.dart';
-import '../Widget/driver_details.dart';
+import '../Widget/driver_screen.dart';
+import '../Widget/driver_screen.dart';
 import '../Widget/home_screen.dart';
 
 // ignore: non_constant_identifier_names
