@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 AddDriver addDriverFromJson(String str) => AddDriver.fromJson(json.decode(str));

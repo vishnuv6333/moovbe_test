@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final authentication = authenticationFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 Authentication authenticationFromJson(String str) =>

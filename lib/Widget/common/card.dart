@@ -14,7 +14,8 @@ class _CardHomeState extends State<CardHome> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: Stack(clipBehavior: Clip.none, children: [
+      child: Stack(
+        clipBehavior: Clip.none, children: [
         Padding(
           padding: const EdgeInsets.all(20),
           child: InkWell(
@@ -28,13 +29,12 @@ class _CardHomeState extends State<CardHome> {
               decoration: BoxDecoration(
                   color: HexColor(widget.type == "Bus" ? '#FC153B' : '#2B2B2B'),
                   borderRadius: const BorderRadius.all(Radius.circular(7))),
-              height: 207,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(30),
+                    padding: const EdgeInsets.all(10),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Column(
@@ -43,6 +43,7 @@ class _CardHomeState extends State<CardHome> {
                           Text(
                             widget.type == "Bus" ? "Bus" : "Driver",
                             style: const TextStyle(
+                               fontFamily: "Axiforma",
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
@@ -52,6 +53,7 @@ class _CardHomeState extends State<CardHome> {
                                 ? "Manage your Bus"
                                 : "Mange your Driver",
                             style: const TextStyle(
+                              fontFamily: "Axiforma",
                                 color: Colors.white, fontSize: 12),
                           ),
                         ],

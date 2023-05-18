@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
-import '../../Provider/Auth.dart';
+import '../../Provider/auth_user.dart';
 import '../../Provider/driver_list.dart';
 
 class FormWidget extends StatelessWidget {
-  FormWidget({
+  const FormWidget({
     Key? key,
     required this.type,
     required this.formKey,
   }) : super(key: key);
   final String type;
+  // ignore: prefer_typing_uninitialized_variables
   final formKey;
   @override
   Widget build(BuildContext context) {
     final formData = Provider.of<AuthProvider>(context);
-    final DriverProviders = Provider.of<DriverProvider>(context);
+    final driverProviders = Provider.of<DriverProvider>(context);
     return Form(
         key: formKey,
         child: Column(
@@ -38,8 +39,9 @@ class FormWidget extends StatelessWidget {
                     fillColor: HexColor('#2A2A2A1A'),
                     label: Center(
                         child: Text(
+                          
                       type == '!Login' ? 'Enter User Username' : "Enter Name",
-                      style: TextStyle(color: HexColor('#707070')),
+                      style: TextStyle(color: HexColor('#707070'),fontFamily:  "Axiforma",fontSize: 13),
                     ))),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -50,7 +52,7 @@ class FormWidget extends StatelessWidget {
                 },
                 onChanged: (value) => type == 'Login'
                     ? formData.setName(value)
-                    : DriverProviders.driverName(value),
+                    : driverProviders.driverName(value),
                 onSaved: (value) {},
               ),
             ),
@@ -73,7 +75,7 @@ class FormWidget extends StatelessWidget {
                       type == 'Login'
                           ? 'Enter User Password'
                           : "Enter License Number",
-                      style: TextStyle(color: HexColor('#707070')),
+                      style:  TextStyle(color: HexColor('#707070'),fontFamily:  "Axiforma",fontSize: 13),
                     ))),
                 obscureText: true,
                 validator: (value) {
@@ -84,7 +86,7 @@ class FormWidget extends StatelessWidget {
                 },
                 onChanged: (value) => type == 'Login'
                     ? formData.setPassword(value)
-                    : DriverProviders.LicenceN(value),
+                    : driverProviders.licenceN(value),
                 onSaved: (value) {},
               ),
             ),
@@ -106,7 +108,7 @@ class FormWidget extends StatelessWidget {
                           label: Center(
                               child: Text(
                             "Mobile Number",
-                            style: TextStyle(color: HexColor('#707070')),
+                            style:  TextStyle(color: HexColor('#707070'),fontFamily:  "Axiforma",fontSize: 13),
                           ))),
                       obscureText: true,
                       validator: (value) {
@@ -115,11 +117,11 @@ class FormWidget extends StatelessWidget {
                         }
                         return null;
                       },
-                      onChanged: (value) => DriverProviders.mobileN(value),
+                      onChanged: (value) => driverProviders.mobileN(value),
                       onSaved: (value) {},
                     ),
                   )
-                : SizedBox()
+                : const SizedBox()
           ],
         ));
   }

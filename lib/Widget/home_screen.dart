@@ -12,6 +12,7 @@ class HomeScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50.0),
         child: AppBar(
+          automaticallyImplyLeading: false,
           centerTitle: true,
           title: Stack(children: [
             Positioned(
@@ -46,7 +47,7 @@ class HomeScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: Text("${dummy.length} Busses Found"),
+              child: Text("${dummy.length} Busses Found",style: const TextStyle(fontFamily: 'Axiforma'),),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),

@@ -12,6 +12,20 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
+   void initState() {
+    Future.delayed(const Duration(seconds: 2), () async {
+      final sharedPrefs = await SharedPreferences.getInstance();
+
+      if (sharedPrefs.getString('user_token') != null) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -62,10 +76,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> chekLogin() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     if (sharedPrefs.getString('user_token') != null) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+       Navigator.pushReplacementNamed(context, '/home');
     } else {
-      Navigator.of(context).pushNamed('/login');
+       Navigator.pushReplacementNamed(context, '/login');
     }
   }
 }

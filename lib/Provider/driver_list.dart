@@ -1,13 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Constant/base_url.dart';
-import '../Model/AddDriverModel.dart';
-import '../Model/DriverModel.dart';
+import '../Model/add_driver_model.dart';
+import '../Model/driver_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class DriverProvider extends ChangeNotifier {
@@ -59,8 +58,6 @@ class DriverProvider extends ChangeNotifier {
       urlid = prefs.getString('url_id')!;
       token = prefs.getString('user_token')!;
       final uri = Uri.parse(BaseUrl().baseUrl + 'DriverApi/$urlid/');
-      print(uri);
-      print(token);
       final headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token'
@@ -71,33 +68,16 @@ class DriverProvider extends ChangeNotifier {
         "license_no": license
       };
       String jsonBody = json.encode(body);
-      print(jsonBody);
       Response response =
           await http.post(uri, headers: headers, body: jsonBody);
-      print("ghgdfhs" + response.body);
       if (response.statusCode == 200) {
         addisloading = false;
         addDrivers = addDriverFromJson(response.body);
         if (addDrivers.status == true) {
-          Fluttertoast.showToast(
-            msg: addDrivers.message.toString(),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black87,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          tosterMessage(addDrivers.message.toString());
+         
         } else {
-          Fluttertoast.showToast(
-            msg: addDrivers.message.toString(),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black87,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+         tosterMessage(addDrivers.message.toString());
         }
       } else {
         print("object");
@@ -106,6 +86,41 @@ class DriverProvider extends ChangeNotifier {
     } catch (e) {
       print(e);
     }
+  }
+  tosterMessage([String? string]){
+     Fluttertoast.showToast(
+            msg: addDrivers.message.toString(),
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black87,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+  }
+
+  deleteDriver(index, driverId) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      urlid = prefs.getString('url_id')!;
+      token = prefs.getString('user_token')!;
+      Map<String, dynamic> body = {"driver_id": driverId};
+      String jsonBody = json.encode(body);
+
+      Response response =
+          await http.delete(Uri.parse(BaseUrl().baseUrl + "DriverApi/$urlid/"),
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer $token',
+              },
+              body: jsonBody);
+      if (response.statusCode == 200) {
+        final body = json.decode(response.body);
+        tosterMessage(body['message']);
+      }
+      driverLists.driverList.removeAt(index);
+      notifyListeners();
+    } catch (e) {}
   }
 
   void setName(String value) {
@@ -123,7 +138,7 @@ class DriverProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void LicenceN(String value) {
+  void licenceN(String value) {
     license = value;
     notifyListeners();
   }

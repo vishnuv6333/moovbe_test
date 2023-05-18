@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../Provider/Auth.dart';
+import '../Provider/auth_user.dart';
 import 'common/form.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -65,6 +64,7 @@ class LoginScreen extends StatelessWidget {
                       Text(
                         'Welcome',
                         style: TextStyle(
+                          fontFamily: "Axiforma",
                             color: Colors.white,
                             fontSize: 40,
                             fontWeight: FontWeight.bold),
