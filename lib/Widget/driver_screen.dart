@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
-
-import '../Constant/dummy.dart';
 import '../Provider/driver_list.dart';
 import 'common/bus_driver_list.dart';
 
@@ -10,10 +9,37 @@ class DriverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final driverList = Provider.of<DriverProvider>(context, listen: false);
-    driverList.getDriverList();
+    final driverPro = Provider.of<DriverProvider>(context, listen: false);
+    driverPro.getDriverList();
     return Scaffold(
+      bottomNavigationBar: InkWell(
+        onTap: () {
+          Navigator.of(context).pushNamed('/addDriver');
+        },
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: HexColor('#FC153B'),
+              borderRadius: const BorderRadius.all(Radius.circular(7))),
+          child: const Center(
+              child: Text(
+            "Add Driver",
+            style: TextStyle(color: Colors.white),
+          )),
+        ),
+      ),
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/home',
+              (route) => false,
+            );
+          },
+        ),
         backgroundColor: Colors.black,
         centerTitle: true,
         title: const Text(
@@ -21,27 +47,28 @@ class DriverList extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-              padding: EdgeInsets.only(left: 20),
-              child:
-                  ElevatedButton(onPressed: () {}, child: Text("Add Driver"))),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20),
-            child: Text(
-                "${driverList.DriverLists.driverList.length} Busses Found"),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: CommonList(
-                Driverlist: driverList.DriverLists,
-                Buslist: const [],
-                type: "Driver"),
-          ),
-        ],
-      ),
+      body: Consumer<DriverProvider>(builder: (context, DriverProvider, child) {
+        return DriverProvider.isLoading
+            ? Center(child: CircularProgressIndicator())
+            : ListView(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                    child: Text(
+                        "${driverPro.driverLists.driverList.length} Busses Found"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: CommonList(
+                      Driverlist: driverPro.driverLists,
+                      type: "Driver",
+                      Buslist: [],
+                    ),
+                  ),
+                ],
+              );
+      }),
     );
   }
 }

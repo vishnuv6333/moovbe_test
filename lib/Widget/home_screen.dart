@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
-
 import '../Constant/dummy.dart';
-import '../Model/BusModel.dart' as ors;
 import 'common/bus_driver_list.dart';
 import 'common/card.dart';
 

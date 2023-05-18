@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:mooovbe/Widget/home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Provider/Auth.dart';
+import 'common/form.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final formData = Provider.of<AuthProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,
         floatingActionButton: Padding(
-          padding: const EdgeInsets.all(50),
+          padding: const EdgeInsets.all(30),
           child: InkWell(
-            onTap: () {
-              Navigator.of(context).pushNamed("/home");
+            onTap: () async {
+              if (_formKey.currentState!.validate() == true) {
+                await formData.userlogin(context);
+                if (formData.isLoggedIn == true) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/home',
+                    (route) => false,
+                  );
+                }
+              }
             },
             child: Container(
               height: 50,
@@ -68,82 +82,9 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
-          FormWidget()
+          FormWidget(type: "Login", formKey: _formKey)
         ]),
       ),
     );
-  }
-}
-
-class FormWidget extends StatelessWidget {
-  const FormWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-        child: Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 42),
-          child: TextFormField(
-            decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                alignLabelWithHint: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-                filled: true,
-                fillColor: HexColor('#2A2A2A1A'),
-                label: Center(
-                    child: Text(
-                  'Enter User Username',
-                  style: TextStyle(color: HexColor('#707070')),
-                ))),
-            keyboardType: TextInputType.emailAddress,
-            validator: (value) {
-              if (value!.isEmpty || !value.contains('@')) {
-                return 'Invalid email!';
-              }
-              return null;
-            },
-            onSaved: (value) {},
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(30),
-          child: TextFormField(
-            decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-                filled: true,
-                fillColor: HexColor('#2A2A2A1A'),
-                label: Center(
-                    child: Text(
-                  'Password',
-                  style: TextStyle(color: HexColor('#707070')),
-                ))),
-            obscureText: true,
-            validator: (value) {
-              if (value!.isEmpty || value.length < 5) {
-                return 'Password is too short!';
-              }
-            },
-            onSaved: (value) {},
-          ),
-        ),
-      ],
-    ));
   }
 }

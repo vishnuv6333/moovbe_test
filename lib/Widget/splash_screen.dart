@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:mooovbe/Widget/Login_screen.dart';
+import 'package:mooovbe/Widget/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -15,7 +21,7 @@ class SplashScreen extends StatelessWidget {
           padding: const EdgeInsets.all(50),
           child: InkWell(
             onTap: () {
-              Navigator.of(context).pushNamed('/login');
+              chekLogin();
             },
             child: Container(
               height: 50,
@@ -52,6 +58,14 @@ class SplashScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-class OnInkWell {}
+  Future<void> chekLogin() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    if (sharedPrefs.getString('user_token') != null) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+    } else {
+      Navigator.of(context).pushNamed('/login');
+    }
+  }
+}

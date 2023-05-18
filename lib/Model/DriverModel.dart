@@ -27,10 +27,10 @@ class DriverList {
 }
 
 class DriverListElement {
-  final int id;
-  final String name;
-  final String mobile;
-  final String licenseNo;
+  final int? id;
+  final String? name;
+  final String? mobile;
+  final String? licenseNo;
 
   DriverListElement({
     required this.id,

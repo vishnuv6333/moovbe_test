@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:mooovbe/Model/DriverModel.dart';
+import 'package:provider/provider.dart';
 
-import '../../Model/BusModel.dart';
+import '../../Provider/driver_list.dart';
 
 class CommonList extends StatefulWidget {
   // ignore: non_constant_identifier_names
@@ -11,6 +12,7 @@ class CommonList extends StatefulWidget {
   final DriverList? Driverlist;
   const CommonList({
     Key? key,
+    // ignore: non_constant_identifier_names
     required this.Buslist,
     required this.type,
     this.Driverlist,
@@ -25,6 +27,9 @@ class _CommonListState extends State<CommonList> {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
+      physics: widget.type == 'Bus'
+          ? const NeverScrollableScrollPhysics()
+          : const ScrollPhysics(),
       itemCount: widget.type == 'Bus'
           ? widget.Buslist.length
           : widget.Driverlist!.driverList.length,
@@ -53,10 +58,10 @@ class _CommonListState extends State<CommonList> {
               leading: Container(child: Image.asset("assets/img/bus2.png")),
               title: Text(widget.type == 'Bus'
                   ? widget.Buslist[index]['name']
-                  : widget.Driverlist!.driverList[index].name),
+                  : widget.Driverlist!.driverList[index].name ?? ''),
               subtitle: Text(widget.type == 'Bus'
                   ? widget.Buslist[index]['model']
-                  : widget.Driverlist!.driverList[index].licenseNo),
+                  : 'Lic no:${widget.Driverlist!.driverList[index].licenseNo}'),
               trailing: Container(
                 padding: const EdgeInsets.all(7),
                 height: 36,
