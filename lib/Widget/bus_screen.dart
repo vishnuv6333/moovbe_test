@@ -1,8 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:mooovbe/Constant/seat22.dart';
 
-class BusDetails extends StatelessWidget {
+class BusDetails extends StatefulWidget {
   const BusDetails({Key? key}) : super(key: key);
+
+  @override
+  State<BusDetails> createState() => _BusDetailsState();
+}
+
+class _BusDetailsState extends State<BusDetails> {
+  List seq = [];
+  @override
+  void initState() {
+    var au = seat[0][0]['id'];
+    double myDouble = au.toDouble();
+    print(myDouble.runtimeType);
+    int count = 36; // Number of elements in the sequence
+    List<int> sequence = [];
+
+    for (int i = 2; i <= count; i += 4) {
+      sequence.add(i);
+    }
+    print(sequence);
+    seq = sequence;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,58 +80,46 @@ class BusDetails extends StatelessWidget {
                     ),
                     color: Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(7))),
-                child: Padding(
-                  padding: const EdgeInsets.all(35),
-                  child: GridView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: 36, // Assuming 9 seats in the bus
-
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 0,
-                      crossAxisCount:
-                          2, // Assuming 3 columns for seat arrangement
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Stack(
+                        children: List.generate(seat.length, (inde) {
+                      return Padding(
+                        padding: EdgeInsets.all(0),
                         child: Row(
                           children: [
-                            FittedBox(
-                              fit: BoxFit.contain,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                      left: 6.7,
-                                      top: -2,
-                                      child: Image.asset(
-                                          "assets/img/Rectangle.png")),
-                                  Image.asset("assets/img/Union.png")
-                                ],
-                              ),
-                            ),
-                            FittedBox(
-                              fit: BoxFit.contain,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                      left: 6.7,
-                                      top: -2,
-                                      child: Image.asset(
-                                          "assets/img/Rectangle.png")),
-                                  Image.asset("assets/img/Union.png")
-                                ],
-                              ),
-                            ),
+                            Stack(
+                                children: List.generate(seat[inde].length, (index) {
+                              var tk = seat[inde][index]['top'];
+                              var le = seat[inde][index]['left'];
+                              double myDouble = tk.toDouble();
+                              double myDoub = le.toDouble();
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    left: myDoub, top: myDouble),
+                                child: Container(
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                          left: 6.9,
+                                          child: Image.asset(
+                                              "assets/img/Rectangle.png")),
+                                      Image.asset("assets/img/Union.png"),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }))
                           ],
                         ),
                       );
-                    },
+                    })),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

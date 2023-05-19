@@ -74,6 +74,8 @@ flutter:
     - assets/img/bus2.png
     - assets/img/Union.png
     - assets/img/Rectangle.png
+    - assets/img/Rectangleblack.png
+    - assets/img/Unionblack.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
