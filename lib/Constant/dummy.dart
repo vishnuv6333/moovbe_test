@@ -30,3 +30,11 @@ List dummy = [
     "model": "KSRTC Swift Scania P-​series",
   },
 ];
+List bus = [
+  {"id": 1, "name": "kiran", "licno": "fgfhd", "seat_type": "2*2"},
+  {
+    "id": 2,
+    "name": "J K travel",
+    "model": "3*3",
+  }
+];
