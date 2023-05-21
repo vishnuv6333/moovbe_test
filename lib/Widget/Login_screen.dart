@@ -64,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                       Text(
                         'Welcome',
                         style: TextStyle(
-                          fontFamily: "Axiforma",
+                            fontFamily: "Axiforma",
                             color: Colors.white,
                             fontSize: 40,
                             fontWeight: FontWeight.bold),
@@ -82,7 +82,19 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
-          FormWidget(type: "Login", formKey: _formKey)
+          FormWidget(type: "Login", formKey: _formKey),
+          Consumer<AuthProvider>(builder: (context, loadingProvider, child) {
+            return loadingProvider.isLoading
+                ? Container(
+                    height: 100,
+                    width: 100,
+                    color: Colors.black.withOpacity(0.5),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : const SizedBox.shrink();
+          })
         ]),
       ),
     );

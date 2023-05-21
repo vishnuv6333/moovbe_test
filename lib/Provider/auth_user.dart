@@ -7,7 +7,9 @@ import 'package:http/http.dart' as http;
 import '../Model/auth_model.dart';
 
 class AuthProvider extends ChangeNotifier {
-  bool isloading = true;
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
   String name = '';
   String password = '';
   String token = '';
@@ -16,14 +18,10 @@ class AuthProvider extends ChangeNotifier {
       access: '', name: '', status: null, message: '', refresh: '', urlId: '');
 
   bool isLoggedIn = false;
-  Future<void> init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString('user_token'));
-    isLoggedIn = prefs.getString('user_token') != '' ? true : false;
-    notifyListeners();
-  }
 
   userlogin([BuildContext? context]) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -34,33 +32,37 @@ class AuthProvider extends ChangeNotifier {
 
       Response response =
           await http.post(uri, headers: headers, body: jsonBody);
-      print(response);
       if (response.statusCode == 200) {
         userCredentials = authenticationFromJson(response.body);
         if (userCredentials.status == true) {
           token = userCredentials.access.toString();
           prefs.setString("url_id", userCredentials.urlId.toString());
           prefs.setString("user_token", userCredentials.access.toString());
+          _isLoading = false;
           isLoggedIn = true;
+          notifyListeners();
         } else {
-          final snackBar = SnackBar(
-            content: Text(userCredentials.message),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {
-                // Some code to undo the change.
-              },
-            ),
-          );
-          ScaffoldMessenger.of(context!).showSnackBar(snackBar);
+          _isLoading = false;
+          messanger(context, userCredentials.message);
         }
       } else {
-        print("object");
+        final msg = json.decode(response.body);
+        messanger(context, msg['message']);
       }
       notifyListeners();
-    } catch (e) {
-      print(e);
-    }
+      // ignore: empty_catches
+    } catch (e) {}
+  }
+
+  messanger(BuildContext? context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () {},
+      ),
+    );
+    ScaffoldMessenger.of(context!).showSnackBar(snackBar);
   }
 
   void setName(String value) {

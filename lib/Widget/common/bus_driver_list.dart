@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:mooovbe/Model/driver_model.dart';
 import 'package:provider/provider.dart';
-
+import '../../Constant/arguments.dart';
 import '../../Provider/driver_list.dart';
 
 class CommonList extends StatefulWidget {
@@ -34,7 +33,7 @@ class _CommonListState extends State<CommonList> {
             : itemProvider.driverLists.driverList.length,
         itemBuilder: (context, index) {
           return Container(
-            height: 90,
+            height: 95,
             margin: const EdgeInsets.only(bottom: 9, top: 9),
             decoration: const BoxDecoration(
               color: Color(0xFFffffff),
@@ -45,8 +44,8 @@ class _CommonListState extends State<CommonList> {
                   blurRadius: 11.0,
                   spreadRadius: 2.0,
                   offset: Offset(
-                    2.0, // Move to right 5  horizontally
-                    2.0, // Move to bottom 5 Vertically
+                    2.0,
+                    2.0,
                   ),
                 )
               ],
@@ -54,7 +53,12 @@ class _CommonListState extends State<CommonList> {
             child: Center(
               child: ListTile(
                 minLeadingWidth: 40,
-                leading: Container(child: Image.asset("assets/img/bus2.png")),
+                leading: widget.type == 'Bus'
+                    ? Image.asset("assets/img/bus2.png")
+                    : const CircleAvatar(
+                        backgroundImage: AssetImage('assets/img/Ellipse.png'),
+                        radius: 25,
+                      ),
                 title: Text(
                   widget.type == 'Bus'
                       ? widget.Buslist[index]['name']
@@ -65,15 +69,22 @@ class _CommonListState extends State<CommonList> {
                   widget.type == 'Bus'
                       ? widget.Buslist[index]['model']
                       : 'Lic no:${itemProvider.driverLists.driverList[index].licenseNo}',
-                  style: const TextStyle(fontFamily: "Axiforma"),
+                  style: const TextStyle(
+                    fontFamily: "Axiforma",
+                    overflow: TextOverflow.clip,
+                  ),
                 ),
                 trailing: InkWell(
                   onTap: () {
                     if (widget.type != 'Bus') {
                       itemProvider.deleteDriver(
                           index, itemProvider.driverLists.driverList[index].id);
-                    }else{
-                      Navigator.of(context).pushNamed('/busSeat');
+                    } else {
+                      Navigator.of(context).pushNamed(
+                        '/busSeat',
+                        arguments: MyArguments(widget.Buslist[index]['name'],
+                            widget.Buslist[index]['type']),
+                      );
                     }
                   },
                   child: Container(

@@ -39,7 +39,6 @@ class DriverProvider extends ChangeNotifier {
           .get(Uri.parse(BaseUrl().baseUrl + "DriverApi/$urlid/"), headers: {
         'Authorization': 'Bearer $token',
       });
-
       if (response.statusCode == 200) {
         driverLists = driverListFromJson(response.body);
         _isLoading = false;
@@ -70,33 +69,32 @@ class DriverProvider extends ChangeNotifier {
       String jsonBody = json.encode(body);
       Response response =
           await http.post(uri, headers: headers, body: jsonBody);
+      addDrivers = addDriverFromJson(response.body);
       if (response.statusCode == 200) {
         addisloading = false;
-        addDrivers = addDriverFromJson(response.body);
+
         if (addDrivers.status == true) {
           tosterMessage(addDrivers.message.toString());
-         
         } else {
-         tosterMessage(addDrivers.message.toString());
+          tosterMessage(addDrivers.message.toString());
         }
       } else {
-        print("object");
+        tosterMessage(addDrivers.message.toString());
       }
       notifyListeners();
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
-  tosterMessage([String? string]){
-     Fluttertoast.showToast(
-            msg: addDrivers.message.toString(),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black87,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+
+  tosterMessage([String? string]) {
+    Fluttertoast.showToast(
+      msg: string.toString(),
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black87,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 
   deleteDriver(index, driverId) async {
@@ -114,9 +112,11 @@ class DriverProvider extends ChangeNotifier {
                 'Authorization': 'Bearer $token',
               },
               body: jsonBody);
+      final msg = json.decode(response.body);
       if (response.statusCode == 200) {
-        final body = json.decode(response.body);
-        tosterMessage(body['message']);
+        tosterMessage(msg['message']);
+      } else {
+        tosterMessage(msg['message']);
       }
       driverLists.driverList.removeAt(index);
       notifyListeners();
